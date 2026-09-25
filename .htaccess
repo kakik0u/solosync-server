@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Shared-hosting mode: the whole extracted directory may live below public_html.
+# Keep runtime/configuration directories unreachable and dispatch public routes
+# through the same front controller used when public/ is the DocumentRoot.
+RewriteRule ^(?:private|src|migrations|bin|tests|plugins|dist)(?:/|$) - [F,L,NC]
+# Do not break host-managed ACME challenges or other standard .well-known files.
+RewriteRule ^\.well-known(?:/|$) - [L,NC]
+RewriteRule (^|/)\. - [F,L]
+RewriteRule ^setup\.php$ public/setup.php [L,NC]
+RewriteRule ^(.*)$ public/index.php?route=/$1 [QSA,L]

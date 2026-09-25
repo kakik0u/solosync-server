@@ -1,0 +1,16 @@
+# Runtime secrets and server-specific extensions must never enter this repository.
+/private/*
+!/private/.gitignore
+!/private/config.example.php
+/plugins/*
+!/plugins/.gitignore
+!/plugins/example/
+!/plugins/example/plugin.php
+
+# Generated distribution and local tooling files.
+/dist/
+/vendor/
+/.env
+/.env.*
+*.local.php
+.DS_Store

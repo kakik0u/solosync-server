@@ -1,0 +1,7 @@
+config.php
+setup.key.php
+setup.install.lock
+.config.setup.*.php
+*.local.php
+!.gitignore
+!config.example.php

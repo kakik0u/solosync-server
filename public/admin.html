@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Solosync Server</title>
+  <link rel="stylesheet" href="../admin.css?v=20260925-1">
+</head>
+<body>
+  <main>
+    <h1>Solosync Server</h1>
+
+    <section id="login-panel">
+      <h2>管理画面にログイン</h2>
+      <p class="muted">セットアップ時に設定した管理者パスワードを入力してください。</p>
+      <form id="login-form" method="post" action="../v1/admin/login">
+        <label for="password">パスワード</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button type="submit">ログイン</button>
+      </form>
+      <p id="login-message" class="message"></p>
+      <details id="reset-help" class="help">
+        <summary>パスワードがわからない</summary>
+        <h3>パスワードのリセット</h3>
+        <p>パスワードはハッシュだけを保存しているため、元の文字列を確認することはできません。</p>
+        <p>パスワードを忘れた場合は、PHPを実行できる端末で次のコマンドを実行し、<code>NEW_PASSWORD</code> を新しいパスワードに置き換えてください。</p>
+        <pre>php -r "echo password_hash('NEW_PASSWORD', PASSWORD_DEFAULT), PHP_EOL;"</pre>
+        <p>表示されたハッシュを <code>private/config.php</code> の <code>admin_password_hash</code> に設定してください。変更後、以前の管理画面セッションは無効になります。</p>
+      </details>
+    </section>
+
+    <div id="admin-panel" hidden>
+      <div class="toolbar">
+        <p id="message">状態を取得しています…</p>
+        <button id="logout" class="secondary" type="button">ログアウト</button>
+      </div>
+      <section>
+        <details class="status-details" open>
+          <summary>ステータス</summary>
+          <pre id="status">—</pre>
+          <button id="install" type="button">インストール / マイグレーション</button>
+        </details>
+      </section>
+      <section>
+        <h2>接続キー</h2>
+        <button id="create-key" type="button">+ 接続キーを作成</button>
+        <p class="warning">接続キー本文は作成時に一度だけ表示されます。</p>
+        <div id="keys"></div>
+      </section>
+      <section>
+        <h2>Plugin</h2>
+        <button id="maintenance" type="button">未処理イベントを配送</button>
+      </section>
+    </div>
+
+    <dialog id="key-dialog" aria-labelledby="key-dialog-title">
+      <div class="dialog-shell">
+        <button id="key-dialog-close" class="dialog-close" type="button" aria-label="閉じる">×</button>
+
+        <form id="key-create-form">
+          <h2 id="key-dialog-title">キーを作成:</h2>
+          <label for="key-label">名前:</label>
+          <input id="key-label" name="label" value="main" maxlength="120" autocomplete="off" required>
+          <p id="key-dialog-message" class="message"></p>
+          <div class="dialog-actions">
+            <button id="key-create-submit" type="submit">キーを生成</button>
+          </div>
+        </form>
+
+        <div id="key-result" hidden>
+          <h2>キーが発行されました:</h2>
+          <div class="key-copy-row">
+            <code id="new-key"></code>
+            <button id="copy-key" type="button">コピー</button>
+          </div>
+          <div class="key-copy-row">
+            <code id="server-url"></code>
+            <button id="copy-server-url" type="button">コピー</button>
+          </div>
+          <p class="warning">1度しか表示されません。</p>
+          <p id="copy-message" class="message" aria-live="polite"></p>
+          <div class="dialog-actions">
+            <button id="key-result-close" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+  </main>
+  <script src="../admin.js?v=20260925-1"></script>
+</body>
+</html>
