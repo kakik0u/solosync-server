@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS server_writer_state (
+  id TINYINT UNSIGNED NOT NULL PRIMARY KEY,
+  device_id VARCHAR(128) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  local_cursor BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  CONSTRAINT ck_server_writer_singleton CHECK (id=1)
+) ENGINE=InnoDB;

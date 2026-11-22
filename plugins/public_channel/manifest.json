@@ -1,0 +1,10 @@
+{
+  "id": "public_channel",
+  "version": "1.0.0",
+  "minServerVersion": "1.0.0",
+  "name": { "ja": "公開チャンネル", "en": "Public channels" },
+  "description": { "ja": "選択したチャンネルを読み取り専用のWebページで公開します。", "en": "Publish selected channels as read-only web pages." },
+  "capabilities": ["read-model", "http"],
+  "settingsSchemaVersion": 1,
+  "settings": []
+}

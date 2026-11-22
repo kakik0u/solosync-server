@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>管理画面 · Solosync Server</title>
+  <link rel="stylesheet" href="../admin.css?v=20261001-1">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="管理メニュー">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">S</span><div><strong>Solosync</strong><small>Server 管理画面</small></div></div>
+      <nav id="admin-nav" aria-label="設定項目" hidden>
+        <button class="nav-item active" type="button" data-view="overview" aria-current="page">概要</button>
+        <button class="nav-item" type="button" data-view="keys">接続キー</button>
+        <button class="nav-item" type="button" data-view="plugins">プラグイン</button>
+        <button class="nav-item" type="button" data-view="updates">サーバー更新</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <label for="theme-select">表示テーマ</label>
+        <select id="theme-select" aria-label="表示テーマ"><option value="system">端末に合わせる</option><option value="light">ライト</option><option value="dark">ダーク</option></select>
+        <button id="logout" class="text-button" type="button" hidden>ログアウト</button>
+      </div>
+    </aside>
+    <main class="content">
+      <section id="login-panel" class="login-card panel">
+        <span class="eyebrow">SOLOSYNC SERVER</span>
+        <h1>管理画面にログイン</h1>
+        <p class="muted">セットアップ時に設定した管理者パスワードを入力してください。</p>
+        <form id="login-form" method="post" action="../v1/admin/login">
+          <label for="password">パスワード</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+          <button type="submit">ログイン</button>
+        </form>
+        <p id="login-message" class="message" role="alert"></p>
+        <details id="reset-help" class="help"><summary>パスワードがわからない</summary>
+          <h3>パスワードのリセット</h3>
+          <p>パスワードはハッシュだけを保存しているため、元の文字列を確認できません。</p>
+          <p>PHPを実行できる端末で次のコマンドを実行し、<code>NEW_PASSWORD</code> を新しいパスワードに置き換えてください。</p>
+          <pre>php -r "echo password_hash('NEW_PASSWORD', PASSWORD_DEFAULT), PHP_EOL;"</pre>
+          <p>表示されたハッシュを <code>private/config.php</code> の <code>admin_password_hash</code> に設定します。変更後、以前の管理画面セッションは無効になります。</p>
+        </details>
+      </section>
+      <div id="admin-panel" hidden>
+        <div class="page-header"><div><span class="eyebrow">SETTINGS</span><h1 id="view-title">概要</h1><p id="view-description" class="muted">サーバーの稼働状況を確認します。</p></div><span id="server-pill" class="pill">確認中</span></div>
+        <p id="message" class="notice" role="status" aria-live="polite">状態を取得しています…</p>
+        <section class="view" data-panel="overview" aria-labelledby="view-title">
+          <div class="panel"><div class="panel-heading"><div><h2>ステータス</h2><p class="muted">このサーバーに保存された同期データ</p></div></div>
+            <div id="status-grid" class="stats-grid"><span class="muted">読み込み中…</span></div>
+            <details class="help"><summary>詳細を見る</summary><pre id="status">—</pre></details>
+            <div class="actions"><button id="install" class="secondary" type="button">データベースを初期化・更新</button></div>
+          </div>
+          <div class="panel"><h2>同期データの読み取り</h2><p class="muted">プラグインがチャンネルやメモを扱うためのデータを準備します。</p>
+            <p id="projection-status" class="muted">状態を確認しています…</p>
+            <div class="actions"><button id="projection-step" type="button">データを準備・更新</button><button id="projection-rebuild" class="secondary" type="button">読み取りデータを再構築</button><button id="maintenance" class="secondary" type="button">未処理イベントを配送</button></div>
+          </div>
+        </section>
+        <section class="view" data-panel="keys" hidden>
+          <div class="panel"><div class="panel-heading"><div><h2>接続キー</h2><p class="muted">アプリがこのサーバーに接続するためのキーです。キー本文は作成時に一度だけ表示されます。</p></div><button id="create-key" type="button">+ 接続キーを作成</button></div><div id="keys" class="stack"></div></div>
+        </section>
+        <section class="view" data-panel="plugins" hidden>
+          <div class="panel"><h2>プラグイン</h2><p class="muted">有効化すると、プラグイン専用のテーブルを作成します。無効化しても設定とデータは残ります。</p><div id="plugins" class="stack"></div></div>
+        </section>
+        <section class="view" data-panel="updates" hidden>
+          <div class="panel"><h2>サーバー更新</h2><p class="muted">公式GitHub Releaseを確認し、SHA-256ハッシュを照合してから更新します。設定と追加プラグインは保持されます。</p>
+            <div class="update-version"><span class="muted">インストール済み</span><strong id="installed-version">—</strong></div>
+            <p id="update-status" class="muted">更新情報を取得しています…</p><p id="version-warning" class="notice warning" hidden></p><p id="update-preflight" class="muted"></p>
+            <div class="actions"><button id="check-update" class="secondary" type="button">最新版を確認</button><button id="install-update" type="button" hidden>今すぐ更新</button><a id="update-link" hidden rel="noopener noreferrer" target="_blank">Releaseを見る ↗</a></div>
+            <p id="update-result" class="message" role="status" aria-live="polite"></p>
+            <details class="help"><summary>更新について</summary><p>更新前のプログラムは <code>private/update-backups/</code> に保存します。データベースのマイグレーションは元に戻せません。更新中は管理画面を閉じず、完了後にページを再読み込みしてください。共有ホストが必要なPHP拡張やファイル書き込みを許可しない場合は、ReleaseのZIPから手動で更新してください。</p></details>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <dialog id="key-dialog" aria-labelledby="key-dialog-title"><div class="dialog-shell"><button id="key-dialog-close" class="dialog-close" type="button" aria-label="閉じる">×</button>
+    <form id="key-create-form"><h2 id="key-dialog-title">キーを作成</h2><label for="key-label">名前</label><input id="key-label" name="label" value="main" maxlength="120" autocomplete="off" required><p id="key-dialog-message" class="message"></p><div class="dialog-actions"><button id="key-create-submit" type="submit">キーを生成</button></div></form>
+    <div id="key-result" hidden><h2>キーが発行されました</h2><div class="key-copy-row"><code id="new-key"></code><button id="copy-key" type="button">コピー</button></div><div class="key-copy-row"><code id="server-url"></code><button id="copy-server-url" type="button">コピー</button></div><p class="warning">キーは一度しか表示されません。</p><p id="copy-message" class="message" aria-live="polite"></p><div class="dialog-actions"><button id="key-result-close" type="button">閉じる</button></div></div>
+  </div></dialog>
+  <dialog id="plugin-secret-dialog" aria-labelledby="plugin-secret-title"><div class="dialog-shell"><h2 id="plugin-secret-title">接続情報を作成しました</h2><p>この情報は一度しか表示されません。接続先の認証に使用するため、コピーして保管してください。</p><div class="key-copy-row"><code id="plugin-secret"></code><button id="copy-plugin-secret" type="button">コピー</button></div><p id="plugin-secret-message" class="message" aria-live="polite"></p><div class="dialog-actions"><button id="close-plugin-secret" type="button">閉じる</button></div></div></dialog>
+  <script src="../admin.js?v=20261001-1"></script>
+</body>
+</html>

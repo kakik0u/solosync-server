@@ -1,0 +1,12 @@
+{
+  "id": "webhook",
+  "version": "1.0.0",
+  "minServerVersion": "1.0.0",
+  "name": { "ja": "Webhook受信", "en": "Incoming webhooks" },
+  "description": { "ja": "外部POSTから指定チャンネルへメモを追加します。", "en": "Create a memo in a selected channel from an external POST." },
+  "capabilities": ["read-model", "sync-writer", "http"],
+  "settingsSchemaVersion": 1,
+  "settings": [
+    { "key": "maxPerMinute", "type": "integer", "label": { "ja": "1分あたりの最大投稿数", "en": "Maximum posts per minute" }, "min": 1, "max": 120, "default": 30 }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "full",
+    "request": {
+      "content": "",
+      "embeds": [{
+        "type": "rich", "title": "リリース <確認>", "description": "一行目\n二行目 😀",
+        "url": "HTTPS://EXAMPLE.INVALID:443/release", "timestamp": "2026-10-13T09:00:00+09:00", "color": 5793266,
+        "author": {"name": "通知ボット", "url": "https://example.invalid/author", "icon_url": "https://example.invalid/author.png"},
+        "footer": {"text": "Solosync", "icon_url": "https://example.invalid/footer.png"},
+        "image": {"url": "https://example.invalid/image.png"}, "thumbnail": {"url": "https://example.invalid/thumbnail.png"},
+        "fields": [{"name": "状態", "value": "完了\n確認済み", "inline": true}, {"name": "詳細", "value": "本文"}]
+      }]
+    },
+    "payload": {
+      "title": "リリース <確認>", "description": "一行目\n二行目 😀", "url": "https://example.invalid/release", "timestamp": "2026-10-13T00:00:00.000Z", "color": "#5865f2",
+      "author": {"name": "通知ボット", "url": "https://example.invalid/author", "icon": {"url": "https://example.invalid/author.png"}},
+      "footer": {"text": "Solosync", "icon": {"url": "https://example.invalid/footer.png"}},
+      "image": {"url": "https://example.invalid/image.png"}, "thumbnail": {"url": "https://example.invalid/thumbnail.png"},
+      "fields": [{"name": "状態", "value": "完了\n確認済み", "inline": true}, {"name": "詳細", "value": "本文", "inline": false}]
+    }
+  },
+  {"name": "url-only", "request": {"embeds": [{"url": "https://example.invalid"}]}, "payload": {"url": "https://example.invalid/"}},
+  {"name": "image-only", "request": {"embeds": [{"image": {"url": "https://example.invalid/画像.png"}}]}, "payload": {"image": {"url": "https://example.invalid/%E7%94%BB%E5%83%8F.png"}}},
+  {"name": "milliseconds", "request": {"content": "本文", "embeds": [{"title": "0", "timestamp": "1970-01-01T09:00:00.1+09:00", "color": 0}]}, "payload": {"title": "0", "timestamp": "1970-01-01T00:00:00.100Z", "color": "#000000"}}
+]

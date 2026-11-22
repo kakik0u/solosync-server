@@ -1,0 +1,19 @@
+{
+  "id": "mcp",
+  "version": "1.0.0",
+  "minServerVersion": "1.0.0",
+  "name": {
+    "ja": "メモ検索MCP",
+    "en": "Note search MCP"
+  },
+  "description": {
+    "ja": "許可したメモの検索と参照。変更案は起動中のSolocordで確認・承認して適用します。",
+    "en": "Search and read permitted notes. Proposed changes are reviewed and approved in a running Solocord app."
+  },
+  "capabilities": [
+    "read-model",
+    "http"
+  ],
+  "settingsSchemaVersion": 1,
+  "settings": []
+}
